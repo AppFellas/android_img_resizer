@@ -7,7 +7,7 @@ module AndroidImgResizer
 	 
   def AndroidImgResizer.verify_android_project
   	files=["AndroidManifest.xml"]
-  	directories=["res","res/drawable-hdpi","res/drawable-mdpi","res/drawable-ldpi","src"]
+  	directories=["res","res/drawable-hdpi","res/drawable-mdpi","res/drawable-ldpi", "res/drawable-tvdpi","src"]
 	
     files.each do |file|
       if !File::exists?(file)
@@ -60,6 +60,15 @@ module AndroidImgResizer
       puts "Image = #{image} hdpi = #{xsize.to_i}x#{ysize.to_i}"
       hdpi = img.scale(xsize.to_i,ysize.to_i)
       hdpi.write "res/drawable-hdpi/"+image
+      
+      # 133% Resizing - TVDPI
+      xsize=(img.columns*1.33)/2
+      ysize=(img.rows*1.33)/2
+      puts "Image = #{image} tvdpi = #{xsize.to_i}x#{ysize.to_i}"
+      mdpi = img.scale(xsize.to_i,ysize.to_i)
+      mdpi.write "res/drawable-tvdpi/"+image
+      
+      
       # 100% Resizing
       xsize=(img.columns)/2
       ysize=(img.rows)/2
@@ -83,6 +92,13 @@ module AndroidImgResizer
       puts "Image = #{image} mdpi = #{xsize.to_i}x#{ysize.to_i}"
       mdpi = img.scale(xsize.to_i,ysize.to_i)
       mdpi.write "res/drawable-mdpi/"+image
+      
+      #133% -> 100% 
+      xsize=(img.columns)/1.33
+      ysize=(img.rows)/1.33
+      puts "Image = #{image} mdpi = #{xsize.to_i}x#{ysize.to_i}"
+      mdpi = img.scale(xsize.to_i,ysize.to_i)
+      mdpi.write "res/drawable-tvdpi/"+image
 
       #150% -> 75% 
       xsize=(img.columns)/2
